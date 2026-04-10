@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskFlow — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">Task<span>Flow</span></div>
+  <div class="header-right">
+    <div class="search-wrap">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search tasks… (Ctrl+K)">
+    </div>
+    <div class="filter-wrap">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="high">🔴 High</button>
+      <button class="filter-btn" data-filter="medium">🟡 Medium</button>
+      <button class="filter-btn" data-filter="low">🔵 Low</button>
+    </div>
+    <button class="btn-add" onclick="openModal()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      New Task
+    </button>
+  </div>
+</header>
+
+<div class="stats-bar" id="statsBar"></div>
+
+<div class="board" id="board">
+  <div class="column" data-col="todo">
+    <div class="col-header">
+      <div class="col-header-left">
+        <div class="col-indicator"></div>
+        <span class="col-title">To Do</span>
+        <span class="col-count" id="count-todo">0</span>
+      </div>
+      <button class="col-add-btn" onclick="openModal('todo')">+</button>
+    </div>
+    <div class="cards-wrap" id="cards-todo"></div>
+  </div>
+  <div class="column" data-col="doing">
+    <div class="col-header">
+      <div class="col-header-left">
+        <div class="col-indicator"></div>
+        <span class="col-title">In Progress</span>
+        <span class="col-count" id="count-doing">0</span>
+      </div>
+      <button class="col-add-btn" onclick="openModal('doing')">+</button>
+    </div>
+    <div class="cards-wrap" id="cards-doing"></div>
+  </div>
+  <div class="column" data-col="done">
+    <div class="col-header">
+      <div class="col-header-left">
+        <div class="col-indicator"></div>
+        <span class="col-title">Done</span>
+        <span class="col-count" id="count-done">0</span>
+      </div>
+      <button class="col-add-btn" onclick="openModal('done')">+</button>
+    </div>
+    <div class="cards-wrap" id="cards-done"></div>
+  </div>
+  <div class="column" data-col="blocked">
+    <div class="col-header">
+      <div class="col-header-left">
+        <div class="col-indicator"></div>
+        <span class="col-title">Blocked</span>
+        <span class="col-count" id="count-blocked">0</span>
+      </div>
+      <button class="col-add-btn" onclick="openModal('blocked')">+</button>
+    </div>
+    <div class="cards-wrap" id="cards-blocked"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">New Task</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label>Task Title *</label>
+      <input type="text" class="form-control" id="taskTitle" placeholder="What needs to be done?">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="form-control" id="taskDesc" placeholder="Add more details…"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Priority</label>
+        <select class="form-control" id="taskPriority">
+          <option value="low">🔵 Low</option>
+          <option value="medium" selected>🟡 Medium</option>
+          <option value="high">🔴 High</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Due Date</label>
+        <input type="date" class="form-control" id="taskDue">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Column</label>
+      <select class="form-control" id="taskColumn">
+        <option value="todo">To Do</option>
+        <option value="doing">In Progress</option>
+        <option value="done">Done</option>
+        <option value="blocked">Blocked</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveTask()">Save Task</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
