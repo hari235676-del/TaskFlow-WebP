@@ -26,9 +26,9 @@ function escHtml(s) {
 function loadTasks() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    tasks = raw ? JSON.parse(raw) : seedTasks();
+    tasks = raw ? JSON.parse(raw) : [];
   } catch {
-    tasks = seedTasks();
+    tasks = [];
   }
 }
 
@@ -63,6 +63,20 @@ function filtered() {
   });
 }
 
+function markDone(id) {
+  const t = tasks.find(t => t.id === id);
+  if (!t) return;
+
+  if (t.col === 'done') {
+    t.col = t.prevCol || 'todo';
+  } else {
+    t.prevCol = t.col;
+    t.col = 'done';
+  }
+
+  render();
+}
+
 // ── DATE FORMATTING ──────────────────────────────────────
 function formatDue(ds) {
   if (!ds) return null;
@@ -88,6 +102,10 @@ function cardHTML(t) {
     <div class="card-top">
       <div class="card-title">${escHtml(t.title)}</div>
       <div class="card-actions">
+        <button class="card-btn" onclick="markDone('${t.id}')" 
+          title="${t.col === 'done' ? 'Undo' : 'Mark as Done'}">
+          ${t.col === 'done' ? '↩' : '✓'}
+        </button>
         <button class="card-btn" onclick="editTask('${t.id}')" title="Edit">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>
